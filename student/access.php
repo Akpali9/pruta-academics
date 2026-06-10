@@ -2,7 +2,8 @@
 require_once "../config/database.php";
 require_once "../config/auth.php";
 require_once "../config/session_lock.php";
-
+require_once "../config/secure.php";
+securePage();
 requireLogin();
 
 $user_id = $_SESSION['user_id'];
