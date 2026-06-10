@@ -2,6 +2,7 @@
 require_once "../config/database.php";
 require_once "../config/auth.php";
 require_once "../config/secure.php";
+enforceSingleSession($pdo, $_SESSION['user_id']);
 securePage();
 requireLogin();
 
