@@ -9,6 +9,8 @@ requireLogin();
 ?>
 
 <h2>Welcome <?= $_SESSION['fullname'] ?></h2>
+<button onclick="toggleTheme()">Toggle Theme</button>
+<script src="../assets/theme.js"></script>
 
 <a href="courses.php">View Courses</a> |
 <a href="access.php">My Access</a> |
