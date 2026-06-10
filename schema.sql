@@ -68,5 +68,6 @@ CREATE TABLE certificates (
 );
 CREATE TABLE user_sessions (
     user_id INT PRIMARY KEY,
-    session_id VARCHAR(255)
+    session_id VARCHAR(255),
+    last_active DATETIME
 );
