@@ -16,3 +16,8 @@ VALUES
  'nigeria',
  'active'
 );
+ALTER TABLE enrollments
+ADD COLUMN receipt VARCHAR(255) NULL;
+
+ALTER TABLE enrollments
+ADD COLUMN access_code_used TINYINT(1) DEFAULT 0;
