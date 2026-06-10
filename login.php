@@ -1,5 +1,6 @@
 <?php
-
+require_once "../config/secure.php";
+securePage();
 require_once 'config/database.php';
 
 session_start();
