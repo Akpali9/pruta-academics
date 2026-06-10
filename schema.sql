@@ -78,3 +78,9 @@ ADD COLUMN bank_reference VARCHAR(100) NULL;
 ALTER TABLE users
 ADD COLUMN reset_token VARCHAR(255) NULL,
 ADD COLUMN reset_expiry DATETIME NULL;
+
+CREATE TABLE login_attempts (
+    email VARCHAR(255) PRIMARY KEY,
+    attempts INT DEFAULT 0,
+    last_attempt DATETIME
+);
