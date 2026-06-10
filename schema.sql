@@ -66,3 +66,7 @@ CREATE TABLE certificates (
     file VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE user_sessions (
+    user_id INT PRIMARY KEY,
+    session_id VARCHAR(255)
+);
