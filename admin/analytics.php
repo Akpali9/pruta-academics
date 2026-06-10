@@ -4,21 +4,19 @@ require_once "../config/auth.php";
 
 requireAdmin();
 
-$totalStudents = $pdo->query("
-SELECT COUNT(*) FROM users WHERE role='student'
+$totalUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+
+$totalRevenue = $pdo->query("
+SELECT COUNT(*) * 5000 FROM enrollments WHERE payment_status='approved'
 ")->fetchColumn();
 
-$totalCourses = $pdo->query("
+$activeCourses = $pdo->query("
 SELECT COUNT(*) FROM courses
-")->fetchColumn();
-
-$active = $pdo->query("
-SELECT COUNT(*) FROM enrollments WHERE status='active'
 ")->fetchColumn();
 ?>
 
-<h2>Analytics Dashboard</h2>
+<h2>Analytical dashboard</h2>
 
-<p>Total Students: <?= $totalStudents ?></p>
-<p>Total Courses: <?= $totalCourses ?></p>
-<p>Active Enrollments: <?= $active ?></p>
+<p>Total Users: <?= $totalUsers ?></p>
+<p>Total Revenue: ₦<?= $totalRevenue ?></p>
+<p>Active Courses: <?= $activeCourses ?></p>
