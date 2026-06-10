@@ -1,6 +1,7 @@
 <?php
 require_once "../config/database.php";
 require_once "../config/auth.php";
+require_once "../config/access_check.php";
 
 requireLogin();
 
@@ -8,36 +9,31 @@ $user_id = $_SESSION['user_id'];
 $module_id = $_GET['id'];
 
 // get module
-$stmt = $pdo->prepare("
-SELECT * FROM modules WHERE id=?
-");
+$stmt = $pdo->prepare("SELECT * FROM modules WHERE id=?");
 $stmt->execute([$module_id]);
 $module = $stmt->fetch();
 
-// check enrollment
-$check = $pdo->prepare("
-SELECT e.*
-FROM enrollments e
-JOIN courses c ON e.course_id = c.id
-WHERE e.user_id=? AND e.course_id=?
-AND e.payment_status='approved'
+// get enrollment
+$stmt = $pdo->prepare("
+SELECT * FROM enrollments
+WHERE user_id=? AND course_id=? AND status='active'
 ");
 
-$check->execute([$user_id, $module['course_id']]);
-if(!$check->fetch()){
-    die("No access");
+$stmt->execute([$user_id, $module['course_id']]);
+$enrollment = $stmt->fetch();
+
+if (!$enrollment) {
+    die("No active enrollment");
+}
+
+// check expiry (YOUR CODE INTEGRATION)
+if (checkExpiry($enrollment)) {
+    die("Access expired. Please renew course.");
 }
 ?>
 
 <h2><?= $module['title'] ?></h2>
 
-<!-- SECURE VIDEO STREAM -->
-<video width="700" controls controlsList="nodownload">
-    <source src="../stream.php?file=<?= $module['video'] ?>" type="video/mp4">
+<video width="700" controls>
+    <source src="../stream.php?file=<?= $module['video'] ?>">
 </video>
-
-<br><br>
-
-<a href="assignment.php?module_id=<?= $module['id'] ?>">
-    View Assignment
-</a>
