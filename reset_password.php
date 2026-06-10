@@ -1,6 +1,7 @@
 <?php
 require_once "config/database.php";
-
+require_once "../config/secure.php";
+securePage();
 $token = $_GET['token'];
 
 $stmt = $pdo->prepare("
