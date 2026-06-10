@@ -2,7 +2,33 @@
 require_once "../config/secure.php";
 securePage();
 require_once 'config/database.php';
+require_once "config/rate_limit.php";
+require_once "config/device.php";
+require_once "config/session_secure.php";
 
+// check attempts first
+checkLoginAttempts($pdo, $email);
+
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email=?");
+$stmt->execute([$email]);
+$user = $stmt->fetch();
+secureSessionStart();
+
+if (!$user || !password_verify($password, $user['password'])) {
+
+    addLoginAttempt($pdo, $email);
+    die("Invalid login");
+}
+
+// reset attempts
+resetAttempts($pdo, $email);
+
+// set session
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['role'] = $user['role'];
+
+$_SESSION['ip'] = getUserIP();
+$_SESSION['device'] = getDeviceHash();
 session_start();
 
 $message = "";
@@ -94,6 +120,8 @@ Login
 
 <a href="register.php">
 Create Account
+</a><p> or </p> <a href="forgot_password.php">
+forgot password
 </a>
 
 </div>
