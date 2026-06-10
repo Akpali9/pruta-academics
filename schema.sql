@@ -71,3 +71,6 @@ CREATE TABLE user_sessions (
     session_id VARCHAR(255),
     last_active DATETIME
 );
+ALTER TABLE enrollments
+ADD COLUMN payment_method VARCHAR(50) DEFAULT 'bank_transfer',
+ADD COLUMN bank_reference VARCHAR(100) NULL;
