@@ -52,3 +52,17 @@ CREATE TABLE progress (
     module_id INT,
     status ENUM('locked','unlocked','completed') DEFAULT 'locked'
 );
+ALTER TABLE enrollments
+ADD COLUMN last_access DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE submissions
+ADD COLUMN graded_at DATETIME NULL;
+
+CREATE TABLE certificates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    course_id INT,
+    certificate_code VARCHAR(100),
+    file VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
