@@ -4,6 +4,7 @@ require_once "../config/auth.php";
 require_once "../config/session_lock.php";
 require_once "../config/access_check.php";
 require_once "../config/secure.php";
+enforceSingleSession($pdo, $_SESSION['user_id']);
 securePage();
 
 requireLogin();
