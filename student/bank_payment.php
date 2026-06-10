@@ -1,7 +1,8 @@
 <?php
 require_once "../config/database.php";
 require_once "../config/auth.php";
-
+require_once "../config/secure.php";
+securePage();
 requireLogin();
 
 $course_id = $_GET['course_id'];
