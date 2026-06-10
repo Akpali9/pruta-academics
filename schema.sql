@@ -84,3 +84,12 @@ CREATE TABLE login_attempts (
     attempts INT DEFAULT 0,
     last_attempt DATETIME
 );
+
+
+
+CREATE TABLE audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    action TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
