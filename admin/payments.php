@@ -73,7 +73,7 @@ Login to start learning.
 
         sendMail(
             $user['email'],
-            "Course Approved - LMS Access Granted",
+            "Course Approved -  Access Granted",
             $message
         );
     }
