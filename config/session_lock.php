@@ -2,26 +2,33 @@
 
 function enforceSingleSession($pdo, $user_id)
 {
-    session_start();
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 
-    $session_id = session_id();
+    $current_session = session_id();
 
+    // check existing session in DB
     $stmt = $pdo->prepare("
-        SELECT session_id FROM user_sessions
-        WHERE user_id=?
+        SELECT session_id
+        FROM user_sessions
+        WHERE user_id = ?
     ");
 
     $stmt->execute([$user_id]);
-    $existing = $stmt->fetchColumn();
+    $saved_session = $stmt->fetchColumn();
 
-    if($existing && $existing !== $session_id){
-        die("Another device is using this account.");
+    // if session exists and mismatch → block access
+    if ($saved_session && $saved_session !== $current_session) {
+        session_destroy();
+        die("⚠ Account already active on another device.");
     }
 
+    // store/update session
     $stmt = $pdo->prepare("
-        REPLACE INTO user_sessions (user_id, session_id)
-        VALUES (?,?)
+        REPLACE INTO user_sessions (user_id, session_id, last_active)
+        VALUES (?, ?, NOW())
     ");
 
-    $stmt->execute([$user_id, $session_id]);
+    $stmt->execute([$user_id, $current_session]);
 }
