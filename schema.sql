@@ -74,3 +74,7 @@ CREATE TABLE user_sessions (
 ALTER TABLE enrollments
 ADD COLUMN payment_method VARCHAR(50) DEFAULT 'bank_transfer',
 ADD COLUMN bank_reference VARCHAR(100) NULL;
+
+ALTER TABLE users
+ADD COLUMN reset_token VARCHAR(255) NULL,
+ADD COLUMN reset_expiry DATETIME NULL;
